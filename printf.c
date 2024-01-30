@@ -20,7 +20,6 @@ int _printf(const char *format, ...)
 	for (; format[i] != '\0'; i++)
 	{
 		if (format[i] == '%')
-		{
 			if (format[i + 1] == '%')
 			{
 				write(1, (format + i), 1);
@@ -35,6 +34,8 @@ int _printf(const char *format, ...)
 			else if (format[i + 1] == 's')
 			{
 				temp2 = va_arg(args, char*);
+				if (temp2 == NULL)
+					temp2 = "(nil)";
 				count = _strlen(temp2);
 				write(1, temp2, count);
 				i++;
@@ -42,7 +43,6 @@ int _printf(const char *format, ...)
 			}
 			else
 				write(1, (format + i), 1);
-		}
 		else
 			write(1, (format + i), 1);
 		length++;
