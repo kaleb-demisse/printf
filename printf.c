@@ -9,12 +9,12 @@
 
 int _printf(const char *format, ...)
 {
-	int length = 0, count;
+	int length = 0, count, i = 0;
 	va_list args;
-	int i = 0;
 	char temp, *temp2;
 
-	if (format == NULL || format == "%" || format == "% " || format == " %")
+	if (format == NULL || (format[0] == '%' && format[1] == '\0') ||
+	   (format[0] == ' ' && format[1] == '%' && format[2] == '\0'))
 		return (-1);
 	va_start(args, format);
 	for (; format[i] != '\0'; i++, length++)
