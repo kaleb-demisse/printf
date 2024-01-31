@@ -62,6 +62,7 @@ int print_number(int n)
 {
 	int length = 0;
 	unsigned int x;
+	char y;
 
 	x = n;
 	if (n < 0)
@@ -73,7 +74,7 @@ int print_number(int n)
 	if (n / 10)
 		length += print_number(x / 10);
 
-	char y = x % 10 + '0';
+	y = x % 10 + '0';
 
 	write(1, &y, 1);
 
