@@ -9,13 +9,13 @@
 
 int _printf(const char *format, ...)
 {
-	int length = 0;
+	int length = 0, count;
 	va_list args;
 	int i = 0;
-	char temp;
-	int count;
-	char *temp2;
+	char temp, *temp2;
 
+	if (format == NULL)
+		return (-1);
 	va_start(args, format);
 	for (; format[i] != '\0'; i++, length++)
 		if (format[i] == '%')
