@@ -17,42 +17,36 @@ int _printf(const char *format, ...)
 	char *temp2;
 
 	va_start(args, format);
-	for (; format[i] != '\0'; i++)
-	{
+	for (; format[i] != '\0'; i++, length++)
 		if (format[i] == '%')
-			if (format[i + 1] == '%')
+			switch (format[i + 1])
 			{
-				write(1, (format + i), 1);
-				i++;
+				case '%':
+					write(1, (format + i), 1);
+					i++;
+					break;
+				case 'c':
+					temp = (char)(va_arg(args, int));
+					write(1, &temp, 1);
+					i++;
+					break;
+				case 's':
+					temp2 = va_arg(args, char*);
+					count = _strlen(temp2);
+					write(1, temp2, count);
+					i++;
+					length += count - 2;
+					break;
+				case 'd':
+				case 'i':
+					length += print_number(va_arg(args, int)) - 1;
+					i++;
+					break;
+				default:
+					write(1, (format + i), 1);
 			}
-			else if (format[i + 1] == 'c')
-			{
-				temp = (char)(va_arg(args, int));
-				write(1, &temp, 1);
-				i++;
-			}
-			else if (format[i + 1] == 's')
-			{
-				temp2 = va_arg(args, char*);
-				if (temp2 == NULL)
-					temp2 = "(nil)";
-				count = _strlen(temp2);
-				write(1, temp2, count);
-				i++;
-				length += count - 2;
-			}
-			else if (format[i + 1] == 'd' || format[i + 1] == 'i')
-            		{
-                		temp = va_arg(args, int);
-                		length += print_number(temp);
-                		i++;
-            		}
-			else
-				write(1, (format + i), 1);
 		else
 			write(1, (format + i), 1);
-		length++;
-	}
 	va_end(args);
 	return (length);
 }
@@ -66,26 +60,22 @@ int _printf(const char *format, ...)
 
 int print_number(int n)
 {
-    int length = 0;
+	int length = 0;
+	unsigned int x;
 
-    if (n < 0)
-    {
-        write(1, "-", 1);
-        n = -n;
-        length++;
-    }
+	x = n;
+	if (n < 0)
+	{
+		write(1, "-", 1);
+		x = -n;
+		length++;
+	}
+	if (n / 10)
+		length += print_number(x / 10);
 
-    if (n == 0)
-    {
-        write(1, "0", 1);
-        return 1;
-    }
+	char y = x % 10 + '0';
 
-    if (n / 10)
-        length += print_number(n / 10);
+	write(1, &y, 1);
 
-    char digit = (char)(n % 10 + '0');
-    write(1, &digit, 1);
-
-    return length + 1;
+	return (length + 1);
 }

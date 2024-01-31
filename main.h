@@ -6,6 +6,7 @@
 
 int _strlen(const char *s);
 int _printf(const char *format, ...);
+int print_number(int n);
 
 
 #endif /*MAIN_H*/
